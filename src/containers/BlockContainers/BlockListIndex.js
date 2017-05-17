@@ -1,74 +1,37 @@
 import React from  'react';
 import { connect } from 'react-redux';
-import { blocksActions, blocksSelectors } from '../../store/blocks/index';
+
 import { BlockList } from '../../components/blocks/BlockList';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import {fetchBlocks,deleteBlock} from '../../actions/blockActions';
 
 
 
 
 class BlockListIndex extends React.Component{
-  static contextTypes = {
-    router: React.PropTypes.object,
-    store: React.PropTypes.object,
-  };
-
-
-
-  constructor(props, context) {
-    super(props, context);
-    this.navigate = this.navigate.bind(this);
-    this.state ={
-      currentPage : 1,
-      loading:true
-
-    }
-  }
+ 
 
 
   componentDidMount(){
-    this.fetchBlocks({page: this.state.currentPage});
+
+   var hello=  this.props.fetchBlocks();
+  console.log(hello);
   }
-  componentWillReceiveProps(nextProps) {
-
-    if(nextProps.data.blocks.length>0){
-      this.setState({loading:false})
-    }
-  }
-
-  fetchBlocks(params) {
-    this.context.store.dispatch(blocksActions.fetchBlocks(params));
-  }
-
-  navigate(page){
-    //alert(page);
-
-   // this.props.data.currentPage = page;
-    this.setState({currentPage : page})
-    this.setState({loading:true})
-    this.fetchBlocks({page: page});
-  }
-
+  
   render(){
-
-    const {
-      params,
-      data,
-    } = this.props;
-    console.log(Math.ceil(data.lastpage));
 
     return(
       <div >
         <h2>Blocks</h2>
         <Segment color='blue' raised={false} basic>
-          <Dimmer inverted active={this.state.loading} id="block-Container">
+          {/*<Dimmer inverted active={this.state.loading} id="block-Container">
             <Loader inverted/>
-          </Dimmer>
+          </Dimmer>*/}
 
           {
 
-            data.blocks != undefined &&
-            <BlockList blocks={data.blocks} onNavigate={this.navigate} currentpage = {this.state.currentPage} maxpage = {Math.ceil(data.lastpage)}/>
+            this.props.blocks != undefined &&
+            <BlockList blocks={this.props.blocks} />
           }
         </Segment>
 
@@ -76,14 +39,15 @@ class BlockListIndex extends React.Component{
     );
   }
 }
-
-function mapStateToProps(state) {
-    return  {
-      params: blocksSelectors.getParams(state),
-      data: blocksSelectors.getBlocks(state)
-    }
+BlockListIndex.propTypes = {
+    blocks: React.PropTypes.array.isRequired,
+    fetchBlocks:React.PropTypes.func.isRequired,
+    deleteBlock:React.PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, {blocksActions, blocksSelectors})(BlockListIndex);
+function mapStateToProps(state) {
+    return {blocks: state.blocks}
+}
+export default connect(mapStateToProps, {fetchBlocks, deleteBlock })(BlockListIndex);
 
 

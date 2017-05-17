@@ -5,13 +5,13 @@
 
 import React from 'react';
 import { BlockListRow } from './BlockListRow';
-import { BlocksPagination } from  './BlocksPagination';
-export const BlockList = ({blocks, onNavigate , currentpage, maxpage}) => {
+
+export const BlockList = ({blocks}) => {
 
   return (
     <div>
 
-      <BlocksPagination currentpage = {currentpage} maxpage = {maxpage} onNavigate = {onNavigate}/>
+   
       <table className="ui celled table">
         <thead>
         <tr>
@@ -31,7 +31,7 @@ export const BlockList = ({blocks, onNavigate , currentpage, maxpage}) => {
         </tbody>
 
       </table>
-      <BlocksPagination currentpage = {currentpage} maxpage = {maxpage} onNavigate = {onNavigate}/>
+     
 
 
     </div>

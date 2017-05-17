@@ -1,32 +1,37 @@
-/* eslint-disable no-case-declarations */
-const defaultState = {
+import {SET_BLOCKS, ADD_BLOCK,BLOCK_FETCHED,BLOCK_UPDATED,BLOCK_DELETED} from '../actions/blockActions'
+export default function blocks(state = [], action = {}) {
+    switch (action.type) {
+        case ADD_BLOCK:
+            return [
+                ...state,
+                action.block
+            ];
+            case BLOCK_DELETED:
+            return state.filter(item=>item._id!==action.blockId);
+            case BLOCK_UPDATED:
+            return state.map(item=>{
+                if(item.id===action.block._id) return action.block;
+                return item;
+            });
 
-    blocks: [],
-    blockDataAPI: [],
-    finaData: [],
+            case BLOCK_FETCHED:
+            const index =state.findIndex(item=>item._id===action.block._id);
+            if(index>-1){
+                return state.map(item=>{
+                    if(item._id===action.block._id) return action.block;
+                    return item;
+                });
+            }else{
+                return[
+                    ...state,
+                    action.block
+                ];
+            }
 
-    snackbar: {
-        state: false,
-        message: ''
+        case SET_BLOCKS:
+            return action.blocks;
+
+        default:
+            return state;
     }
-};
-
-
-export default function blocksreduce(state = defaultState, action) {
-   switch(action.type){
-     case 'GET_BLOCK_DATA_RECEIVED':
-      let blocks;// = action.data;
-      state.blocks = action.data;
-      blocks = state.blocks;
-        // blocks = blocks.reverse()
-        return {
-            ...state,
-            blocks
-        };
-
-
-     default:
-       return state;
-
-   }
 }

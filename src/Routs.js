@@ -6,7 +6,6 @@ import './index.css';
 import { Link, Match } from 'react-router';
 
 import BlockListIndex from './containers/BlockContainers/BlockListIndex';
-import BlockDetailIndex from './containers/BlockContainers/BlockDetailIndex';
 
 class Routs extends Component {
   render() {
@@ -23,7 +22,7 @@ class Routs extends Component {
         <Match exactly pattern="/games" component={GamesPage} />
         <Match pattern="/games/new" component={GamesFormPage} />
         <Match pattern="/game/:_id" component={GamesFormPage} />
-       <Match pattern="blocks/:blockid" component={BlockDetailIndex} />
+     
         <Match pattern="/blocks" component={BlockListIndex} />
 
       </div>
